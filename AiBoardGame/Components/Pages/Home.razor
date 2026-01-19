@@ -37,7 +37,6 @@
                     <div class="cell @GetCellColorClass(idx)">
                         <span class="cell-id">@idx</span>
                         <div class="cell-label">@GetCellLabel(idx)</div>
-
                         <div class="tokens character-tokens">
                             @foreach (var p in Players.Where(x => x.Position == idx && !x.IsObserver))
                             {
@@ -102,7 +101,9 @@
                                 }
                                 else if (isMyTurn)
                                 {
-                                    <button class="btn-roll" @onclick="RequestRoll" disabled="@(isRolling || isPopupActive || isQuizActive || isAttackMode)">ĐỔ XÚC XẮC</button>
+                                    <button class="btn-roll" @onclick="RequestRoll" disabled="@(isRolling || isProcessing || isPopupActive || isQuizActive || isAttackMode)">
+                                        @(isProcessing ? "ĐANG XỬ LÝ..." : "ĐỔ XÚC XẮC")
+                                    </button>
                                 }
                                 else
                                 {
@@ -133,15 +134,7 @@
             <h3>📜 HƯỚNG DẪN & LUẬT CHƠI</h3>
             <div class="guide-content">
                 <div class="guide-section"><h5>1. CÁCH CHƠI</h5><p>🎯 Trả lời câu hỏi tích lũy điểm. Kết thúc sau 10 vòng.</p></div>
-                <div class="guide-section">
-                    <h5>2. QUY TẮC CÁC Ô</h5>
-                    <ul>
-                        <li><span class="dot-guide" style="background:#a5d6a7"></span> <b>Xanh lá:</b> Câu hỏi Dễ (+1đ)</li>
-                        <li><span class="dot-guide" style="background:#ce93d8"></span> <b>Tím:</b> Câu hỏi Vừa (+2đ)</li>
-                        <li><span class="dot-guide" style="background:#fff59d"></span> <b>Vàng:</b> Câu hỏi Khó (+3đ)</li>
-                        <li><span class="dot-guide" style="background:#ef9a9a"></span> <b>Đỏ:</b> Tấn công (-2đ đối thủ)</li>
-                    </ul>
-                </div>
+                <div class="guide-section"><h5>2. QUY TẮC CÁC Ô</h5><ul><li><b>Xanh lá:</b> Dễ (+1đ)</li><li><b>Tím:</b> Vừa (+2đ)</li><li><b>Vàng:</b> Khó (+3đ)</li><li><b>Đỏ:</b> Tấn công (-2đ)</li></ul></div>
             </div>
             <button class="btn-ok" @onclick="() => isGuideActive = false">ĐÓNG</button>
         </div>
@@ -161,15 +154,12 @@
             {
                 <h4>🔔 @currentActivePlayerName đang trả lời...</h4>
             }
-
             <p class="quiz-content">@currentQuiz.Content</p>
             <div class="quiz-options">
                 @for (int i = 0; i < currentQuiz.Options.Count; i++)
                 {
                     var index = i;
-                    <button class="btn-option" disabled="@(!isMyTurn)" @onclick="() => AnswerQuiz(index)">
-                        @currentQuiz.Options[index]
-                    </button>
+                    <button class="btn-option" disabled="@(!isMyTurn)" @onclick="() => AnswerQuiz(index)">@currentQuiz.Options[index]</button>
                 }
             </div>
         </div>
@@ -183,7 +173,6 @@
             @if (isMyTurn)
             {
                 <h4>⚔️ CHIẾN THUẬT TẤN CÔNG</h4>
-                <p>Chọn đối thủ để trừ 2 điểm:</p>
                 <div class="attack-list">
                     @foreach (var p in Players.Where(x => !x.IsObserver && x.ConnectionId != hubConnection?.ConnectionId))
                     {
@@ -196,8 +185,7 @@
             else
             {
                 <h4>🛡️ CẢNH BÁO TẤN CÔNG</h4>
-                <p><b>@currentActivePlayerName</b> đang chọn mục tiêu tấn công...</p>
-                <p><i>Hãy cẩn thận!</i></p>
+                <p><b>@currentActivePlayerName</b> đang chọn mục tiêu...</p>
             }
         </div>
     </div>
@@ -231,7 +219,7 @@
 }
 
 <style>
-    /* CSS Cập nhật Background */
+    /* CSS Background & Layout */
     .monopoly-container {
         display: flex;
         justify-content: center;
@@ -255,7 +243,7 @@
         box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
-    /* CSS MỚI: CHỮ TRONG Ô */
+    /* Cell Styles */
     .cell {
         background: #ecf0f1;
         border: 1px solid #bdc3c7;
@@ -278,7 +266,6 @@
         color: #333;
         font-weight: 800;
         opacity: 0.7;
-        z-index: 0;
         pointer-events: none;
     }
 
@@ -288,33 +275,6 @@
         left: 3px;
         font-size: 0.5rem;
         color: rgba(0,0,0,0.3);
-    }
-
-    /* Disable button cho người xem */
-    .btn-option:disabled {
-        background: #e0e0e0;
-        color: #999;
-        cursor: not-allowed;
-        border-color: #ccc;
-    }
-
-        .btn-option:disabled:hover {
-            background: #e0e0e0;
-            color: #999;
-            border-color: #ccc;
-            transform: none;
-        }
-
-    /* Các CSS cũ giữ nguyên */
-    .room-info-badge {
-        position: absolute;
-        top: -40px;
-        left: 0;
-        background: white;
-        padding: 5px 15px;
-        border-radius: 5px;
-        font-weight: bold;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .cell-start {
@@ -345,6 +305,7 @@
         background: #b0bec5;
     }
 
+    /* Character & Tokens */
     .character-tokens {
         display: flex;
         flex-wrap: wrap;
@@ -392,6 +353,7 @@
         vertical-align: middle;
     }
 
+    /* Lobby & Game Status */
     .center-content {
         grid-column: 2/5;
         grid-row: 2/5;
@@ -451,6 +413,7 @@
         padding: 3px 0;
     }
 
+    /* Buttons & Inputs */
     .lobby-box {
         background: white;
         padding: 30px;
@@ -514,16 +477,17 @@
         background: #2980b9;
     }
 
+    .btn-roll:disabled {
+        background: #95a5a6;
+        cursor: not-allowed;
+    }
+
     .btn-guide {
         background: #f39c12;
         width: 100%;
         margin-top: 15px;
         color: white;
     }
-
-        .btn-guide:hover {
-            background: #e67e22;
-        }
 
     .btn-guide-small {
         background: #f39c12;
@@ -534,6 +498,18 @@
         cursor: pointer;
         margin-top: 10px;
         font-size: 0.8rem;
+    }
+
+    /* Misc */
+    .room-info-badge {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: white;
+        padding: 5px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .dice-img {
@@ -561,6 +537,7 @@
         }
     }
 
+    /* Popups */
     .modal-overlay {
         position: fixed;
         top: 0;
@@ -614,6 +591,13 @@
             background: #d32f2f;
             color: white;
             border-color: #d32f2f;
+        }
+
+        .btn-option:disabled {
+            background: #eee;
+            color: #aaa;
+            cursor: not-allowed;
+            border-color: #ddd;
         }
 
     .btn-attack-target {
@@ -682,18 +666,6 @@
         margin-right: 5px;
     }
 
-    .char-guide-row {
-        display: flex;
-        align-items: center;
-        margin-bottom: 5px;
-        font-size: 0.9rem;
-    }
-
-        .char-guide-row img {
-            margin-right: 8px;
-            border-radius: 3px;
-        }
-
     .timer-bar {
         height: 5px;
         background: red;
@@ -751,12 +723,14 @@
     private int currentPlayerIndex = 0, lastDiceValue = 1, currentRound = 1;
     private bool isRolling = false, isPopupActive = false, isQuizActive = false, isAttackMode = false, isGuideActive = false, isGameOver = false;
     private string popupMessage = "";
-    private string currentActivePlayerName = ""; // Tên người đang chơi lượt này
+    private string currentActivePlayerName = "";
     private QuizQuestion? currentQuiz;
     private HubConnection? hubConnection;
-
     private int quizTimeLeft = 10;
     private CancellationTokenSource? timerCts;
+
+    // MỚI: Cờ hiệu để khóa nút xúc xắc khi đang chờ Server
+    private bool isProcessing = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -769,30 +743,18 @@
         hubConnection.On<string, int>("GameStarted", (turnId, round) => { gameStarted = true; currentRound = round; UpdateTurn(turnId); });
         hubConnection.On<List<Player>>("GameOver", (finalList) => { Players = finalList; isGameOver = true; isQuizActive = false; isPopupActive = false; InvokeAsync(StateHasChanged); });
 
-        hubConnection.On<int>("DiceRolled", async (val) =>
-        {
-            isRolling = true; InvokeAsync(StateHasChanged);
-            await Task.Delay(2000);
-            lastDiceValue = val; isRolling = false;
-            if (isMyTurn)
-            {
-                var p = Players[currentPlayerIndex];
-                p.Position = (p.Position + lastDiceValue) % 16;
-                HandleCellLogic(p); // Chỉ người chơi hiện tại mới chạy Logic này
-            }
-            InvokeAsync(StateHasChanged);
-        });
-
-        // MỚI: Xử lý sự kiện hiển thị Câu hỏi cho tất cả mọi người
+        // MỚI: Xử lý hiển thị Quiz
         hubConnection.On<QuizQuestion, string>("ShowQuiz", (q, activeId) =>
         {
             currentQuiz = q;
             currentActivePlayerName = Players.FirstOrDefault(p => p.ConnectionId == activeId)?.Name ?? "Người chơi";
             isQuizActive = true;
+            // Nếu là lượt mình thì đếm giờ
+            if (activeId == hubConnection.ConnectionId) _ = StartQuizTimer();
             InvokeAsync(StateHasChanged);
         });
 
-        // MỚI: Xử lý sự kiện hiển thị Tấn công cho tất cả
+        // MỚI: Xử lý hiển thị Attack
         hubConnection.On<string>("ShowAttack", (activeId) =>
         {
             currentActivePlayerName = Players.FirstOrDefault(p => p.ConnectionId == activeId)?.Name ?? "Người chơi";
@@ -800,25 +762,29 @@
             InvokeAsync(StateHasChanged);
         });
 
-        // MỚI: Nhận kết quả từ Server và Chuyển lượt
+        // MỚI: Xử lý kết quả và chuyển lượt (QUAN TRỌNG ĐỂ MỞ KHÓA NÚT)
         hubConnection.On<string, string, List<Player>, int>("TurnResultAndNext", (msg, nextId, list, round) =>
         {
-            // Tắt hết popup cũ
-            isQuizActive = false;
-            isAttackMode = false;
-
-            // Cập nhật dữ liệu mới
-            Players = list;
-            currentRound = round;
-
-            // Hiện thông báo kết quả
-            if (!string.IsNullOrEmpty(msg))
-            {
-                popupMessage = msg;
-                isPopupActive = true;
-            }
-
+            isQuizActive = false; isAttackMode = false; isProcessing = false; // Mở khóa nút
+            Players = list; currentRound = round;
+            if (!string.IsNullOrEmpty(msg)) { popupMessage = msg; isPopupActive = true; }
             UpdateTurn(nextId);
+        });
+
+        hubConnection.On<int>("DiceRolled", async (val) =>
+        {
+            isRolling = true; InvokeAsync(StateHasChanged);
+            await Task.Delay(2000);
+            lastDiceValue = val; isRolling = false;
+
+            if (isMyTurn)
+            {
+                isProcessing = true; // Khóa nút ngay lập tức
+                var p = Players[currentPlayerIndex];
+                p.Position = (p.Position + lastDiceValue) % 16;
+                HandleCellLogic(p);
+            }
+            InvokeAsync(StateHasChanged);
         });
 
         await hubConnection.StartAsync();
@@ -841,7 +807,6 @@
         string color = GetCellColorClass(p.Position);
         if (p.Position == 0)
         {
-            // Về đích thì tự xử lý luôn không cần popup Quiz
             p.Score += 5;
             hubConnection!.SendAsync("SyncResult", "🎉 HOÀN THÀNH! +5 điểm.", Players);
             return;
@@ -852,108 +817,61 @@
             case "cell-easy": InitiateQuiz(1); break;
             case "cell-normal": InitiateQuiz(2); break;
             case "cell-hard": InitiateQuiz(3); break;
-            case "cell-attack":
-                // Gửi tín hiệu để mở Popup Attack cho mọi người
-                hubConnection!.SendAsync("SyncAttackStart");
-                break;
-            case "cell-forward":
-                p.Position = (p.Position + 2) % 16;
-                hubConnection!.SendAsync("SyncResult", "🚀 TIẾN BƯỚC! +2 bước.", Players);
-                break;
-            case "cell-backward":
-                p.Position = (p.Position - 2 + 16) % 16;
-                hubConnection!.SendAsync("SyncResult", "⚠️ RỦI RO! Lùi 2 bước.", Players);
-                break;
-            default:
-                hubConnection!.SendAsync("SyncResult", $"Đến ô số {p.Position}", Players);
-                break;
+            case "cell-attack": hubConnection!.SendAsync("SyncAttackStart"); break;
+            case "cell-forward": p.Position = (p.Position + 2) % 16; hubConnection!.SendAsync("SyncResult", "🚀 TIẾN BƯỚC! +2 bước.", Players); break;
+            case "cell-backward": p.Position = (p.Position - 2 + 16) % 16; hubConnection!.SendAsync("SyncResult", "⚠️ RỦI RO! Lùi 2 bước.", Players); break;
+            default: hubConnection!.SendAsync("SyncResult", $"Đến ô số {p.Position}", Players); break;
         }
     }
 
-    // MỚI: Hàm khởi tạo Quiz và gửi lên Server để đồng bộ
     private void InitiateQuiz(int difficulty)
     {
         var q = QuestionBank.GetRandomQuestion(difficulty);
-        // Gửi câu hỏi lên Server để Server báo cho mọi người cùng hiện
         hubConnection!.SendAsync("SyncQuizStart", q);
-
-        // Bắt đầu đếm giờ (chỉ chạy ở máy người đang chơi)
-        _ = StartQuizTimer();
     }
 
     private async Task StartQuizTimer()
     {
         quizTimeLeft = 10;
         timerCts?.Cancel(); timerCts?.Dispose(); timerCts = new CancellationTokenSource();
-
         try
         {
-            while (quizTimeLeft > 0)
+            while (quizTimeLeft > 0 && isQuizActive)
             {
                 await Task.Delay(1000, timerCts.Token);
                 quizTimeLeft--;
                 await InvokeAsync(StateHasChanged);
             }
-            // Hết giờ -> Tự động trả lời sai (-1)
-            await InvokeAsync(() => AnswerQuiz(-1));
+            if (isQuizActive && quizTimeLeft <= 0 && isMyTurn)
+            {
+                await InvokeAsync(() => AnswerQuiz(-1));
+            }
         }
-        catch (TaskCanceledException) { }
-        catch (Exception) { }
+        catch { }
     }
 
     private void AnswerQuiz(int index)
     {
-        timerCts?.Cancel(); // Dừng đồng hồ
+        timerCts?.Cancel();
         string msg = "";
-
-        if (index == -1)
-        {
-            Players[currentPlayerIndex].Score -= 1;
-            msg = "⏰ HẾT GIỜ! Bị trừ 1 điểm.";
-        }
-        else if (currentQuiz != null && index == currentQuiz.CorrectIndex)
-        {
-            Players[currentPlayerIndex].Score += currentQuiz.Difficulty;
-            msg = "✅ CHÍNH XÁC! Cộng điểm.";
-        }
-        else
-        {
-            Players[currentPlayerIndex].Score -= 1;
-            msg = "❌ SAI RỒI! Bị trừ 1 điểm.";
-        }
-
-        // Gửi kết quả lên Server để đồng bộ cho mọi người và đóng Popup
+        if (index == -1) { Players[currentPlayerIndex].Score -= 1; msg = "⏰ HẾT GIỜ! Bị trừ 1 điểm."; }
+        else if (currentQuiz != null && index == currentQuiz.CorrectIndex) { Players[currentPlayerIndex].Score += currentQuiz.Difficulty; msg = "✅ CHÍNH XÁC! Cộng điểm."; }
+        else { Players[currentPlayerIndex].Score -= 1; msg = "❌ SAI RỒI! Bị trừ 1 điểm."; }
         hubConnection!.SendAsync("SyncResult", msg, Players);
     }
 
     private void AttackPlayer(Player target)
     {
         target.Score -= 2;
-        string msg = $"⚔️ {Players[currentPlayerIndex].Name} ĐÃ TẤN CÔNG {target.Name} (-2 điểm)!";
-        hubConnection!.SendAsync("SyncResult", msg, Players);
+        hubConnection!.SendAsync("SyncResult", $"⚔️ {Players[currentPlayerIndex].Name} ĐÃ TẤN CÔNG {target.Name} (-2 điểm)!", Players);
     }
 
-    // Nút đóng popup kết quả (chỉ đóng ở máy local)
     private void ClosePopup() { isPopupActive = false; }
     private void ReloadGame() { Navigation.Refresh(true); }
     public void Dispose() { timerCts?.Cancel(); timerCts?.Dispose(); }
 
     private int GetMonopolyIndex(int r, int c) { if (r == 0) return c; if (c == 4 && r > 0) return 4 + r; if (r == 4 && c < 4) return 8 + (4 - c); if (c == 0 && r > 0 && r < 4) return 12 + (4 - r); return -1; }
     private string GetCellColorClass(int i) => i switch { 1 or 7 or 14 => "cell-easy", 2 or 9 or 15 => "cell-normal", 3 or 10 => "cell-hard", 4 or 8 or 12 => "cell-attack", 5 or 11 => "cell-forward", 6 or 13 => "cell-backward", _ => "cell-start" };
-
-    // MỚI: HÀM LẤY TÊN LABEL CHO Ô
-    private string GetCellLabel(int i) => i switch
-    {
-        1 or 7 or 14 => "CÂU HỎI (DỄ)",
-        2 or 9 or 15 => "CÂU HỎI (VỪA)",
-        3 or 10 => "CÂU HỎI (KHÓ)",
-        4 or 8 or 12 => "TẤN CÔNG",
-        5 or 11 => "TIẾN BƯỚC",
-        6 or 13 => "LÙI BƯỚC",
-        0 => "BẮT ĐẦU",
-        _ => ""
-    };
-
+    private string GetCellLabel(int i) => i switch { 1 or 7 or 14 => "CÂU HỎI (DỄ)", 2 or 9 or 15 => "CÂU HỎI (VỪA)", 3 or 10 => "CÂU HỎI (KHÓ)", 4 or 8 or 12 => "TẤN CÔNG", 5 or 11 => "TIẾN BƯỚC", 6 or 13 => "LÙI BƯỚC", 0 => "BẮT ĐẦU", _ => "" };
     private string GetCellName(int i) => i switch { 0 => "", 4 => "PÁC BÓ", 8 => "VIỆT BẮC", 12 => "BA ĐÌNH", _ => "" };
-    private string GetCharacterName(string color) => color.ToLower() switch { "blue" => "Nông dân", "green" => "Bộ đội", "orange" => "Công nhân", _ => "Trí thức" };
 }
