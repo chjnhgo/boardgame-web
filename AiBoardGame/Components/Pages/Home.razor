@@ -1,0 +1,255 @@
+﻿@page "/"
+@using AiBoardGame.Models
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<div class="monopoly-container">
+    @if (!isJoined)
+    {
+        <div class="lobby-box">
+            <h2 class="title">HÀNH TRÌNH THEO CHÂN BÁC</h2>
+            <input @bind="inputName" class="input-name" placeholder="Nhập tên của bạn..." maxlength="15" />
+            
+            <div class="action-buttons">
+                <button class="btn-create" @onclick="CreateRoom">🛠 TẠO PHÒNG (Làm Trọng Tài)</button>
+                <div class="join-area">
+                    <input @bind="inputRoomCode" class="input-code" placeholder="MÃ PHÒNG" maxlength="4" />
+                    <button class="btn-join" @onclick="JoinRoom">VÀO PHÒNG</button>
+                </div>
+            </div>
+            <p class="error-text">@errorMessage</p>
+        </div>
+    }
+    else
+    {
+        <div class="monopoly-board">
+             <div class="room-info-badge">PHÒNG: <b>@currentRoomCode</b></div>
+
+            @for (int i = 0; i < 25; i++)
+            {
+                var r = i / 5; var c = i % 5; var idx = GetMonopolyIndex(r, c);
+
+                @if (idx != -1) {
+                    <div class="cell @GetCellColorClass(idx)">
+                        <span class="cell-id">@idx</span>
+                        <div class="cell-name">@GetCellName(idx)</div>
+                        <div class="tokens">
+                            @foreach (var p in Players.Where(x => x.Position == idx && !x.IsObserver)) {
+                                <div class="token" style="background-color:@p.Color" title="@p.Name"></div>
+                            }
+                        </div>
+                    </div>
+                } 
+                else if (r == 2 && c == 2) {
+                    <div class="center-content">
+                        @if (!gameStarted)
+                        {
+                            <div class="lobby-waiting">
+                                <h5>MÃ PHÒNG: <span class="code-highlight">@currentRoomCode</span></h5>
+                                <p>Danh sách tham gia:</p>
+                                <ul class="player-list">
+                                    @foreach(var p in Players) {
+                                        <li style="color:@(p.IsObserver ? "black" : p.Color)">
+                                            @p.Name @(p.IsHost ? "👑" : "") @(p.IsObserver ? "(Quan sát)" : "")
+                                        </li>
+                                    }
+                                </ul>
+                                @if (isHost) {
+                                    // Host chỉ được start khi có ít nhất 2 người chơi (không tính host)
+                                    var activePlayers = Players.Count(p => !p.IsObserver);
+                                    <button class="btn-start" @onclick="StartGame" disabled="@(activePlayers < 2)">
+                                        BẮT ĐẦU GAME (@activePlayers người chơi)
+                                    </button>
+                                } else {
+                                    <p class="blink">Đang chờ chủ phòng bắt đầu...</p>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="game-status">
+                                @if (isRolling) { <img src="/images/dice 6.gif" class="dice-img" /> }
+                                else { <img src="/images/@(lastDiceValue).jpg" class="dice-img" /> }
+
+                                @if (amIObserver) 
+                                {
+                                    <p class="observer-text">👁 BẠN ĐANG LÀ TRỌNG TÀI</p>
+                                    <p>Đang đợi: <b style="color:@Players[currentPlayerIndex].Color">@Players[currentPlayerIndex].Name</b></p>
+                                }
+                                else
+                                {
+                                    @if (isMyTurn) {
+                                        <button class="btn-roll" @onclick="RequestRoll" disabled="@(isRolling || isPopupActive)">ĐỔ XÚC XẮC</button>
+                                    } else {
+                                        <p class="wait-text">Lượt của: <b style="color:@Players[currentPlayerIndex].Color">@Players[currentPlayerIndex].Name</b></p>
+                                    }
+                                }
+                            </div>
+                            
+                            <div class="mini-leaderboard">
+                                @foreach(var p in Players.Where(x => !x.IsObserver).OrderByDescending(x => x.Score)) {
+                                     <div class="mini-row">
+                                         <span class="dot" style="background-color:@p.Color"></span>
+                                         <span>@p.Name: <b>@p.Score</b> đ</span>
+                                     </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>
+
+@if (isPopupActive) {
+    <div class="modal-overlay">
+        <div class="popup-card">
+            <h4>THÔNG BÁO</h4>
+            <p>@popupMessage</p>
+            @if (amIObserver) {
+                <p><i>(Đang chờ người chơi xác nhận...)</i></p>
+            } else if (isMyTurn) {
+                <button class="btn-ok" @onclick="ClosePopup">ĐÃ HIỂU</button>
+            }
+        </div>
+    </div>
+}
+
+<style>
+    /* CSS đã được đưa vào đúng chỗ */
+    .monopoly-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #2c3e50; font-family: sans-serif; }
+    .monopoly-board { display: grid; grid-template-columns: repeat(5, 120px); grid-template-rows: repeat(5, 120px); gap: 5px; background: #34495e; padding: 10px; border: 8px solid #c0392b; border-radius: 15px; position: relative; }
+    .room-info-badge { position: absolute; top: -40px; left: 0; background: white; padding: 5px 15px; border-radius: 5px; font-weight: bold; }
+    
+    .cell { background: #ecf0f1; border: 1px solid #bdc3c7; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; font-size: 0.8rem; font-weight: bold; }
+    .center-content { grid-column: 2/5; grid-row: 2/5; background: white; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; align-items: center; }
+    
+    .lobby-box { background: white; padding: 30px; border-radius: 15px; text-align: center; width: 400px; }
+    .input-name { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; }
+    .input-code { width: 100px; padding: 10px; text-transform: uppercase; text-align: center; font-weight: bold; }
+    .btn-create, .btn-join, .btn-start, .btn-roll, .btn-ok { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; margin-top: 5px; }
+    .btn-create { background: #d32f2f; width: 100%; }
+    .btn-join { background: #2980b9; }
+    .btn-start { background: #27ae60; }
+    .btn-roll { background: #c0392b; }
+    .btn-ok { background: #2980b9; }
+    
+    .dice-img { width: 60px; height: 60px; margin-bottom: 10px; }
+    .token { width: 15px; height: 15px; border-radius: 50%; border: 1px solid #000; margin: 2px; }
+    .blink { animation: blinker 1.5s linear infinite; color: #7f8c8d; }
+    
+    /* Sửa lỗi keyframes bằng cách đặt trong thẻ style */
+    @@keyframes blinker { 50% { opacity: 0; } }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 999; }
+    .popup-card { background: white; padding: 30px; border-radius: 10px; text-align: center; min-width: 300px; }
+    
+    .cell-start { background: white; }
+    .cell-easy { background: #a5d6a7; }
+    .cell-normal { background: #ce93d8; }
+    .cell-hard { background: #fff59d; }
+    .cell-attack { background: #ef9a9a; }
+    .cell-forward { background: #90caf9; }
+    .cell-backward { background: #b0bec5; }
+</style>
+
+@code {
+    private string inputName = "";
+    private string inputRoomCode = "";
+    private string currentRoomCode = "";
+    private string errorMessage = "";
+    
+    private bool isJoined = false, isHost = false, isMyTurn = false, gameStarted = false, amIObserver = false;
+    private List<Player> Players = new();
+    private int currentPlayerIndex = 0, lastDiceValue = 1;
+    private bool isRolling = false, isPopupActive = false;
+    private string popupMessage = "";
+    private HubConnection? hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder().WithUrl(Navigation.ToAbsoluteUri("/gamehub")).Build();
+
+        hubConnection.On<string, List<Player>>("RoomCreated", (code, list) => {
+            currentRoomCode = code; Players = list; isJoined = true; isHost = true; amIObserver = true;
+            InvokeAsync(StateHasChanged);
+        });
+
+        hubConnection.On<List<Player>, bool>("UpdatePlayers", (list, started) => {
+            Players = list; gameStarted = started;
+            if (!isHost) { isJoined = true; } // Người chơi join vào thì chuyển màn hình
+            InvokeAsync(StateHasChanged);
+        });
+
+        hubConnection.On<string>("JoinError", (msg) => { errorMessage = msg; InvokeAsync(StateHasChanged); });
+
+        hubConnection.On<string>("GameStarted", (turnId) => {
+            gameStarted = true;
+            UpdateTurn(turnId);
+        });
+
+        hubConnection.On<int>("DiceRolled", async (val) => {
+            isRolling = true; InvokeAsync(StateHasChanged);
+            await Task.Delay(2000);
+            lastDiceValue = val; isRolling = false;
+            
+            if (isMyTurn) {
+                var p = Players[currentPlayerIndex];
+                p.Position = (p.Position + lastDiceValue) % 16;
+                HandleCellLogic(p);
+            }
+            InvokeAsync(StateHasChanged);
+        });
+
+        hubConnection.On<string, List<Player>>("NextTurn", (nextId, list) => {
+            Players = list;
+            UpdateTurn(nextId);
+        });
+
+        await hubConnection.StartAsync();
+    }
+
+    private void UpdateTurn(string turnId) {
+        isMyTurn = (hubConnection?.ConnectionId == turnId);
+        currentPlayerIndex = Players.FindIndex(p => p.ConnectionId == turnId);
+        InvokeAsync(StateHasChanged);
+    }
+
+    private async Task CreateRoom() {
+        if(!string.IsNullOrWhiteSpace(inputName)) await hubConnection!.SendAsync("CreateRoom", inputName);
+    }
+
+    private async Task JoinRoom() {
+        if(!string.IsNullOrWhiteSpace(inputName) && !string.IsNullOrWhiteSpace(inputRoomCode)) 
+            await hubConnection!.SendAsync("JoinRoom", inputName, inputRoomCode);
+    }
+
+    private async Task StartGame() { if(isHost) await hubConnection!.SendAsync("StartGame"); }
+    private async Task RequestRoll() { if(isMyTurn) await hubConnection!.SendAsync("RequestRoll"); }
+
+    private int GetMonopolyIndex(int r, int c) {
+        if (r == 0) return c; if (c == 4 && r > 0) return 4 + r;
+        if (r == 4 && c < 4) return 8 + (4 - c); if (c == 0 && r > 0 && r < 4) return 12 + (4 - r); return -1;
+    }
+    
+    private string GetCellColorClass(int i) => i switch {
+        1 or 7 or 14 => "cell-easy", 2 or 9 or 15 => "cell-normal", 3 or 10 => "cell-hard", 
+        4 or 8 or 12 => "cell-attack", 5 or 11 => "cell-forward", 6 or 13 => "cell-backward", _ => "cell-start"
+    };
+
+    private string GetCellName(int i) => i switch { 0 => "BẮT ĐẦU", 4 => "PÁC BÓ", 8 => "VIỆT BẮC", 12 => "BA ĐÌNH", _ => "" };
+
+    private void HandleCellLogic(Player p) {
+        string color = GetCellColorClass(p.Position);
+        if (p.Position == 0) popupMessage = "Hoàn thành vòng! (+Điểm)";
+        else popupMessage = $"Đến ô {p.Position} ({color.Replace("cell-","")})";
+        isPopupActive = true;
+    }
+
+    private async Task ClosePopup() {
+        isPopupActive = false;
+        if (isMyTurn) await hubConnection!.SendAsync("EndTurn", Players);
+    }
+}
