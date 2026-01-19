@@ -145,11 +145,16 @@ h1:focus {
 html, body {
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Quan trọng: Ẩn thanh cuộn, không cho kéo trang */
-    width: 100vw;
-    height: 100vh;
-    background-color: #2c3e50; /* Màu nền trùng với màu game để liền mạch */
-    touch-action: none; /* Chặn các thao tác chạm/vuốt của trình duyệt trên điện thoại */
+    overflow: hidden; /* Khóa thanh cuộn */
+    width: 100vw; /* Chiều rộng 100% màn hình */
+    height: 100vh; /* Chiều cao 100% màn hình */
+    /* --- CẤU HÌNH BACKGROUND FULL MÀN HÌNH TẠI ĐÂY --- */
+    background: url('/images/Background.png') no-repeat center center fixed;
+    background-size: cover; /* Ảnh co giãn phủ kín mọi kích thước màn hình */
+    /* -------------------------------------------------- */
+
+    touch-action: none; /* Chặn thao tác chạm thừa trên mobile */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .page {

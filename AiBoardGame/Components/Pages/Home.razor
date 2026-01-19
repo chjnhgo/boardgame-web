@@ -28,7 +28,7 @@
     else
     {
         <div class="monopoly-board">
-             <div class="room-info-badge">PHÒNG: <b>@currentRoomCode</b> | VÒNG: <b style="color:yellow">@currentRound/10</b></div>
+             <div class="room-info-badge">PHÒNG: <b>@currentRoomCode</b> | VÒNG: <b style="color:red">@currentRound/10</b></div>
 
             @for (int i = 0; i < 25; i++)
             {
@@ -222,11 +222,10 @@
         justify-content: center; 
         align-items: center; 
         min-height: 100vh; 
-        font-family: 'Segoe UI', sans-serif;
+        /* font-family: 'Segoe UI', sans-serif; */
         
         /* CẤU HÌNH BACKGROUND IMAGE MỚI */
-        background: url('/images/Background.png') no-repeat center center fixed;
-        background-size: cover; /* Ảnh phủ kín màn hình */
+        
     }
 
     /* Thêm độ mờ cho bảng game để nổi bật trên nền */
