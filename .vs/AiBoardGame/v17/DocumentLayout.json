@@ -79,8 +79,7 @@
               "RelativeToolTip": "AiBoardGame\\Dockerfile",
               "ViewState": "AgIAAAMAAAAAAAAAAAAAwBkAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-01-19T03:58:48.563Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-19T03:58:48.563Z"
             },
             {
               "$type": "Document",
@@ -92,8 +91,7 @@
               "RelativeToolTip": "AiBoardGame\\Hubs\\GameHub.cs",
               "ViewState": "AgIAAIYAAAAAAAAAAAAowJsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-19T03:11:48.997Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-19T03:11:48.997Z"
             },
             {
               "$type": "Document",
@@ -105,8 +103,7 @@
               "RelativeToolTip": "AiBoardGame\\Model\\Player.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-19T03:11:12.011Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-19T03:11:12.011Z"
             },
             {
               "$type": "Document",
@@ -118,8 +115,7 @@
               "RelativeToolTip": "AiBoardGame\\Components\\Pages\\Home.razor",
               "ViewState": "AgIAAI8AAAAAAAAAAAAowJgAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-18T05:31:41.295Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-18T05:31:41.295Z"
             },
             {
               "$type": "Document",
@@ -131,8 +127,7 @@
               "RelativeToolTip": "AiBoardGame\\Components\\_Imports.razor",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-18T05:31:33.605Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-18T05:31:33.605Z"
             },
             {
               "$type": "Document",
@@ -144,8 +139,7 @@
               "RelativeToolTip": "AiBoardGame\\Model\\QuizQuestion.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T05:30:56.729Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-18T05:30:56.729Z"
             },
             {
               "$type": "Document",
@@ -157,8 +151,7 @@
               "RelativeToolTip": "AiBoardGame\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T04:55:32.199Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-18T04:55:32.199Z"
             },
             {
               "$type": "Document",
@@ -169,21 +162,19 @@
               "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\wwwroot\\favicon.png",
               "RelativeToolTip": "AiBoardGame\\wwwroot\\favicon.png",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001533|",
-              "WhenOpened": "2026-01-19T03:27:00.226Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-19T03:27:00.226Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "AiBoardGame",
+              "Title": "AiBoardGame.csproj",
               "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\AiBoardGame.csproj",
               "RelativeDocumentMoniker": "AiBoardGame\\AiBoardGame.csproj",
               "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\AiBoardGame.csproj",
               "RelativeToolTip": "AiBoardGame\\AiBoardGame.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-01-18T05:26:31.626Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-18T05:26:31.626Z"
             },
             {
               "$type": "Document",
@@ -195,8 +186,7 @@
               "RelativeToolTip": "AiBoardGame\\Data\\QuestionBank.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T05:36:28.863Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-18T05:36:28.863Z"
             }
           ]
         }
