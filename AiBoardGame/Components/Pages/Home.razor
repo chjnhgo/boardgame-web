@@ -12,7 +12,6 @@
         <div class="lobby-box">
             <h2 class="title">HÀNH TRÌNH THEO CHÂN BÁC</h2>
             <input @bind="inputName" class="input-name" placeholder="Nhập tên của bạn..." maxlength="15" />
-            
             <div class="action-buttons">
                 <button class="btn-create" @onclick="CreateRoom">🛠 TẠO PHÒNG (Trọng Tài)</button>
                 <div class="join-area">
@@ -20,7 +19,6 @@
                     <button class="btn-join" @onclick="JoinRoom">VÀO PHÒNG</button>
                 </div>
             </div>
-
             <button class="btn-guide" @onclick="() => isGuideActive = true">📖 HƯỚNG DẪN & QUY TẮC</button>
             <p class="error-text">@errorMessage</p>
         </div>
@@ -28,48 +26,57 @@
     else
     {
         <div class="monopoly-board">
-             <div class="room-info-badge">PHÒNG: <b>@currentRoomCode</b> | VÒNG: <b style="color:red">@currentRound/10</b></div>
+            <div class="room-info-badge">PHÒNG: <b>@currentRoomCode</b> | VÒNG: <b style="color:red">@currentRound/10</b></div>
 
             @for (int i = 0; i < 25; i++)
             {
                 var r = i / 5; var c = i % 5; var idx = GetMonopolyIndex(r, c);
 
-                @if (idx != -1) {
+                @if (idx != -1)
+                {
                     <div class="cell @GetCellColorClass(idx)">
                         <span class="cell-id">@idx</span>
-                        <div class="cell-name">@GetCellName(idx)</div>
+                        <div class="cell-label">@GetCellLabel(idx)</div>
+
                         <div class="tokens character-tokens">
-                            @foreach (var p in Players.Where(x => x.Position == idx && !x.IsObserver)) {
+                            @foreach (var p in Players.Where(x => x.Position == idx && !x.IsObserver))
+                            {
                                 <img src="/images/char_@(p.Color.ToLower()).png" class="char-token" title="@p.Name" />
                             }
                         </div>
                     </div>
-                } 
-                else if (r == 2 && c == 2) {
+                }
+                else if (r == 2 && c == 2)
+                {
                     <div class="center-content">
                         @if (!gameStarted)
                         {
                             <div class="lobby-waiting">
                                 <h5>MÃ PHÒNG: <span class="code-highlight">@currentRoomCode</span></h5>
                                 <ul class="player-list-visual">
-                                    @foreach(var p in Players) {
+                                    @foreach (var p in Players)
+                                    {
                                         <li class="@(p.IsObserver ? "observer-item" : "")">
-                                            @if (!p.IsObserver) {
+                                            @if (!p.IsObserver)
+                                            {
                                                 <img src="/images/char_@(p.Color.ToLower()).png" class="mini-char" />
-                                            } else {
+                                            }
+                                            else
+                                            {
+
                                                 <span class="observer-icon">👁️</span>
                                             }
-                                            <span class="player-name" style="color:@(p.IsObserver ? "#666" : p.Color)">
-                                                @p.Name @(p.IsHost ? "👑" : "")
-                                            </span>
+                                            <span class="player-name" style="color:@(p.IsObserver ? "#666" : p.Color)">@p.Name @(p.IsHost ? "👑" : "")</span>
                                         </li>
                                     }
                                 </ul>
-                                @if (isHost) {
-                                    <button class="btn-start" @onclick="StartGame" disabled="@(Players.Count(p => !p.IsObserver) < 2)">
-                                        BẮT ĐẦU GAME
-                                    </button>
-                                } else {
+                                @if (isHost)
+                                {
+                                    <button class="btn-start" @onclick="StartGame" disabled="@(Players.Count(p => !p.IsObserver) < 2)">BẮT ĐẦU GAME</button>
+                                }
+                                else
+                                {
+
                                     <p class="blink">Đang chờ chủ phòng bắt đầu...</p>
                                 }
                                 <button class="btn-guide-small" @onclick="() => isGuideActive = true">📖 Luật chơi</button>
@@ -78,25 +85,37 @@
                         else
                         {
                             <div class="game-status">
-                                @if (isRolling) { <img src="/images/dice 6.gif" class="dice-img" /> }
-                                else { <img src="/images/@(lastDiceValue).jpg" class="dice-img" /> }
+                                @if (isRolling)
+                                {
+                                    <img src="/images/dice 6.gif" class="dice-img" />
+                                }
+                                else
+                                {
 
-                                @if (amIObserver) {
+                                    <img src="/images/@(lastDiceValue).jpg" class="dice-img" />
+                                }
+
+                                @if (amIObserver)
+                                {
                                     <p><b>TRỌNG TÀI</b> đang theo dõi...</p>
-                                    <p style="font-size:0.9rem">Đang đợi: @Players[currentPlayerIndex].Name</p>
-                                } else if (isMyTurn) {
+                                    <p style="font-size:0.9rem">Lượt của: @Players[currentPlayerIndex].Name</p>
+                                }
+                                else if (isMyTurn)
+                                {
                                     <button class="btn-roll" @onclick="RequestRoll" disabled="@(isRolling || isPopupActive || isQuizActive || isAttackMode)">ĐỔ XÚC XẮC</button>
-                                } else {
+                                }
+                                else
+                                {
                                     <p>Lượt của: <b style="color:@Players[currentPlayerIndex].Color">@Players[currentPlayerIndex].Name</b></p>
                                 }
                             </div>
-                            
                             <div class="mini-leaderboard">
-                                @foreach(var p in Players.Where(x => !x.IsObserver).OrderByDescending(x => x.Score)) {
-                                     <div class="mini-row game-leaderboard-row">
-                                         <img src="/images/char_@(p.Color.ToLower()).png" class="mini-char-leaderboard" />
-                                         <span style="color:@p.Color">@p.Name: <b>@p.Score</b> đ</span>
-                                     </div>
+                                @foreach (var p in Players.Where(x => !x.IsObserver).OrderByDescending(x => x.Score))
+                                {
+                                    <div class="mini-row game-leaderboard-row">
+                                        <img src="/images/char_@(p.Color.ToLower()).png" class="mini-char-leaderboard" />
+                                        <span style="color:@p.Color">@p.Name: <b>@p.Score</b> đ</span>
+                                    </div>
                                 }
                             </div>
                         }
@@ -113,31 +132,15 @@
         <div class="popup-card guide-card">
             <h3>📜 HƯỚNG DẪN & LUẬT CHƠI</h3>
             <div class="guide-content">
-                <div class="guide-section">
-                    <h5>1. CÁCH CHƠI</h5>
-                    <p>🎯 <b>Mục tiêu:</b> Trả lời câu hỏi và tích lũy điểm số cao nhất.</p>
-                    <p>🎲 Mỗi lượt đổ xúc xắc để di chuyển. Trò chơi kết thúc sau <b>10 VÒNG</b>.</p>
-                    <p>⏳ Mỗi câu hỏi có <b>10 giây</b> suy nghĩ. Đúng cộng điểm, sai hoặc hết giờ bị trừ 1 điểm.</p>
-                </div>
-                
+                <div class="guide-section"><h5>1. CÁCH CHƠI</h5><p>🎯 Trả lời câu hỏi tích lũy điểm. Kết thúc sau 10 vòng.</p></div>
                 <div class="guide-section">
                     <h5>2. QUY TẮC CÁC Ô</h5>
                     <ul>
-                        <li><span class="dot-guide" style="background:#a5d6a7"></span> <b>Xanh lá (Dễ):</b> +1 điểm.</li>
-                        <li><span class="dot-guide" style="background:#ce93d8"></span> <b>Tím (Trung bình):</b> +2 điểm.</li>
-                        <li><span class="dot-guide" style="background:#fff59d"></span> <b>Vàng (Khó):</b> +3 điểm.</li>
-                        <li><span class="dot-guide" style="background:#ef9a9a"></span> <b>Đỏ (Tấn công):</b> Trừ đối thủ 2 điểm.</li>
-                        <li><span class="dot-guide" style="background:#90caf9"></span> <b>Xanh Dương:</b> Tiến 2 bước.</li>
-                        <li><span class="dot-guide" style="background:#b0bec5"></span> <b>Xám:</b> Lùi 2 bước.</li>
+                        <li><span class="dot-guide" style="background:#a5d6a7"></span> <b>Xanh lá:</b> Câu hỏi Dễ (+1đ)</li>
+                        <li><span class="dot-guide" style="background:#ce93d8"></span> <b>Tím:</b> Câu hỏi Vừa (+2đ)</li>
+                        <li><span class="dot-guide" style="background:#fff59d"></span> <b>Vàng:</b> Câu hỏi Khó (+3đ)</li>
+                        <li><span class="dot-guide" style="background:#ef9a9a"></span> <b>Đỏ:</b> Tấn công (-2đ đối thủ)</li>
                     </ul>
-                </div>
-
-                <div class="guide-section">
-                    <h5>3. NHÂN VẬT</h5>
-                    <div class="char-guide-row"><img src="/images/char_blue.png" width="20"/> <b>Nông dân:</b> Cần cù, chất phác.</div>
-                    <div class="char-guide-row"><img src="/images/char_green.png" width="20"/> <b>Bộ đội:</b> Kỷ luật, dũng cảm.</div>
-                    <div class="char-guide-row"><img src="/images/char_orange.png" width="20"/> <b>Công nhân:</b> Tiên phong, mạnh mẽ.</div>
-                    <div class="char-guide-row"><img src="/images/char_red.png" width="20"/> <b>Trí thức:</b> Sáng tạo, thông thái.</div>
                 </div>
             </div>
             <button class="btn-ok" @onclick="() => isGuideActive = false">ĐÓNG</button>
@@ -149,14 +152,24 @@
 {
     <div class="modal-overlay">
         <div class="popup-card quiz-card">
-            <div class="timer-bar" style="width: @(quizTimeLeft * 10)%"></div> 
-            <h4>CÂU HỎI (@currentQuiz.Difficulty điểm) - <span style="color:red">@quizTimeLeft s</span></h4>
+            @if (isMyTurn)
+            {
+                <div class="timer-bar" style="width: @(quizTimeLeft * 10)%"></div>
+                <h4>CÂU HỎI (@currentQuiz.Difficulty điểm) - <span style="color:red">@quizTimeLeft s</span></h4>
+            }
+            else
+            {
+                <h4>🔔 @currentActivePlayerName đang trả lời...</h4>
+            }
+
             <p class="quiz-content">@currentQuiz.Content</p>
             <div class="quiz-options">
                 @for (int i = 0; i < currentQuiz.Options.Count; i++)
                 {
-                    var index = i; 
-                    <button class="btn-option" @onclick="() => AnswerQuiz(index)">@currentQuiz.Options[index]</button>
+                    var index = i;
+                    <button class="btn-option" disabled="@(!isMyTurn)" @onclick="() => AnswerQuiz(index)">
+                        @currentQuiz.Options[index]
+                    </button>
                 }
             </div>
         </div>
@@ -167,31 +180,36 @@
 {
     <div class="modal-overlay">
         <div class="popup-card">
-            <h4>CHIẾN THUẬT TẤN CÔNG</h4>
-            <p>Chọn đối thủ để trừ 2 điểm:</p>
-            <div class="attack-list">
-                @foreach (var p in Players.Where(x => !x.IsObserver && x.ConnectionId != hubConnection?.ConnectionId))
-                {
-                    <button class="btn-attack-target" @onclick="() => AttackPlayer(p)">
-                        <img src="/images/char_@(p.Color.ToLower()).png" class="mini-char" /> 
-                        @p.Name (@p.Score đ)
-                    </button>
-                }
-            </div>
+            @if (isMyTurn)
+            {
+                <h4>⚔️ CHIẾN THUẬT TẤN CÔNG</h4>
+                <p>Chọn đối thủ để trừ 2 điểm:</p>
+                <div class="attack-list">
+                    @foreach (var p in Players.Where(x => !x.IsObserver && x.ConnectionId != hubConnection?.ConnectionId))
+                    {
+                        <button class="btn-attack-target" @onclick="() => AttackPlayer(p)">
+                            <img src="/images/char_@(p.Color.ToLower()).png" class="mini-char" /> @p.Name (@p.Score đ)
+                        </button>
+                    }
+                </div>
+            }
+            else
+            {
+                <h4>🛡️ CẢNH BÁO TẤN CÔNG</h4>
+                <p><b>@currentActivePlayerName</b> đang chọn mục tiêu tấn công...</p>
+                <p><i>Hãy cẩn thận!</i></p>
+            }
         </div>
     </div>
 }
 
-@if (isPopupActive) {
+@if (isPopupActive)
+{
     <div class="modal-overlay">
         <div class="popup-card">
-            <h4>THÔNG BÁO</h4>
+            <h4>KẾT QUẢ</h4>
             <p>@popupMessage</p>
-            @if (isMyTurn && !amIObserver) {
-                <button class="btn-ok" @onclick="ClosePopup">ĐÃ HIỂU / TIẾP TỤC</button>
-            } else if (amIObserver) {
-                 <p><i>(Đang chờ người chơi xác nhận...)</i></p>
-            }
+            <button class="btn-ok" @onclick="ClosePopup">ĐÃ HIỂU</button>
         </div>
     </div>
 }
@@ -201,15 +219,12 @@
     <div class="modal-overlay">
         <div class="popup-card winner-card">
             <h3>🏆 TRÒ CHƠI KẾT THÚC 🏆</h3>
-            <p>Sau 10 vòng thi đấu căng thẳng, người chiến thắng là:</p>
-            
-            @{ var winner = Players.Where(x => !x.IsObserver).OrderByDescending(x => x.Score).First(); }
-            
+            @{
+                var winner = Players.Where(x => !x.IsObserver).OrderByDescending(x => x.Score).First();
+            }
             <img src="/images/char_@(winner.Color.ToLower()).png" class="winner-avatar" />
             <h2 class="winner-name" style="color:@winner.Color">@winner.Name</h2>
-            <p class="winner-role">(@GetCharacterName(winner.Color))</p>
             <h1 class="winner-score">@winner.Score Điểm</h1>
-            
             <button class="btn-ok" @onclick="ReloadGame">CHƠI LẠI</button>
         </div>
     </div>
@@ -217,93 +232,516 @@
 
 <style>
     /* CSS Cập nhật Background */
-    .monopoly-container { 
-        display: flex; 
-        justify-content: center; 
-        align-items: center; 
-        min-height: 100vh; 
-        /* font-family: 'Segoe UI', sans-serif; */
-        
-        /* CẤU HÌNH BACKGROUND IMAGE MỚI */
-        
+    .monopoly-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: 'Segoe UI', sans-serif;
+        background: url('/images/Background.png') no-repeat center center fixed;
+        background-size: cover;
     }
 
-    /* Thêm độ mờ cho bảng game để nổi bật trên nền */
-    .monopoly-board { 
-        display: grid; 
-        grid-template-columns: repeat(5, 120px); 
-        grid-template-rows: repeat(5, 120px); 
-        gap: 5px; 
-        background: rgba(52, 73, 94, 0.95); /* Màu nền bán trong suốt */
-        padding: 10px; 
-        border: 8px solid #c0392b; 
-        border-radius: 15px; 
-        position: relative; 
-        box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Đổ bóng cho bảng nổi lên */
+    .monopoly-board {
+        display: grid;
+        grid-template-columns: repeat(5, 120px);
+        grid-template-rows: repeat(5, 120px);
+        gap: 5px;
+        background: rgba(52, 73, 94, 0.95);
+        padding: 10px;
+        border: 8px solid #c0392b;
+        border-radius: 15px;
+        position: relative;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
     }
 
-    /* Các CSS khác giữ nguyên */
-    .room-info-badge { position: absolute; top: -40px; left: 0; background: white; padding: 5px 15px; border-radius: 5px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-    .cell { background: #ecf0f1; border: 1px solid #bdc3c7; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 5px; text-align: center; position: relative; font-size: 0.8rem; font-weight: bold; overflow: visible; }
-    .cell-name { margin-bottom: 2px; font-size: 0.75rem; }
-    .cell-id { position: absolute; top: 2px; left: 4px; font-size: 0.6rem; color: rgba(0,0,0,0.4); }
-    .cell-start { background: white; } .cell-easy { background: #a5d6a7; } .cell-normal { background: #ce93d8; } .cell-hard { background: #fff59d; } .cell-attack { background: #ef9a9a; } .cell-forward { background: #90caf9; } .cell-backward { background: #b0bec5; }
+    /* CSS MỚI: CHỮ TRONG Ô */
+    .cell {
+        background: #ecf0f1;
+        border: 1px solid #bdc3c7;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding-top: 5px;
+        text-align: center;
+        position: relative;
+        font-size: 0.8rem;
+        font-weight: bold;
+        overflow: hidden;
+    }
 
-    .character-tokens { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; width: 100%; height: 100%; position: absolute; bottom: 2px; pointer-events: none; }
-    .char-token { width: 32px; height: 32px; object-fit: contain; margin: -3px; filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3)); transition: all 0.3s ease; z-index: 1; }
-    .cell:hover .char-token { margin: 1px; z-index: 10; transform: scale(1.1); }
+    .cell-label {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        margin-top: 2px;
+        color: #333;
+        font-weight: 800;
+        opacity: 0.7;
+        z-index: 0;
+        pointer-events: none;
+    }
 
-    .mini-char { width: 24px; height: 24px; object-fit: contain; margin-right: 8px; vertical-align: middle; border-radius: 4px; background: #f0f0f0; border: 1px solid #ccc; }
-    .mini-char-leaderboard { width: 20px; height: 20px; object-fit: contain; margin-right: 5px; vertical-align: middle; }
-    .center-content { grid-column: 2/5; grid-row: 2/5; background: white; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .player-list-visual { list-style: none; padding: 0; text-align: left; width: 100%; max-width: 250px; margin-bottom: 15px; }
-    .player-list-visual li { display: flex; align-items: center; padding: 6px; border-bottom: 1px solid #eee; font-weight: bold; font-size: 0.9rem; }
-    .player-name { flex-grow: 1; }
-    .observer-icon { margin-right: 8px; font-size: 1.2rem; }
-    .observer-item { font-style: italic; color: #666; }
+    .cell-id {
+        position: absolute;
+        top: 1px;
+        left: 3px;
+        font-size: 0.5rem;
+        color: rgba(0,0,0,0.3);
+    }
 
-    .mini-leaderboard { margin-top: 10px; width: 100%; font-size: 0.9rem; border-top: 1px solid #eee; padding-top: 5px; }
-    .game-leaderboard-row { display: flex; align-items: center; justify-content: space-between; padding: 3px 0; }
-    .lobby-box { background: white; padding: 30px; border-radius: 15px; text-align: center; width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-    .title { color: #c0392b; font-weight: bold; margin-bottom: 20px; }
-    .input-name { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; }
-    .input-code { width: 100px; padding: 10px; text-transform: uppercase; text-align: center; font-weight: bold; }
-    .btn-create, .btn-join, .btn-start, .btn-roll, .btn-ok, .btn-guide { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; margin-top: 5px; transition: 0.2s; }
-    .btn-create { background: #d32f2f; width: 100%; } .btn-join { background: #2980b9; } .btn-start { background: #27ae60; } .btn-roll { background: #c0392b; } .btn-ok { background: #2980b9; }
-    
-    .btn-guide { background: #f39c12; width: 100%; margin-top: 15px; color: white; }
-    .btn-guide:hover { background: #e67e22; }
-    .btn-guide-small { background: #f39c12; border: none; padding: 5px 10px; border-radius: 4px; color: white; cursor: pointer; margin-top: 10px; font-size: 0.8rem; }
-    
-    .dice-img { width: 60px; height: 60px; margin-bottom: 10px; border-radius: 8px; }
-    .error-text { color: red; margin-top: 10px; font-size: 0.9rem; }
-    .blink { animation: blinker 1.5s linear infinite; color: #7f8c8d; font-style: italic; }
-    @@keyframes blinker { 50% { opacity: 0; } }
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 999; }
-    .popup-card { background: white; padding: 25px; border-radius: 12px; text-align: center; min-width: 320px; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); animation: zoomIn 0.3s; }
-    @@keyframes zoomIn { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
-    .btn-option { display: block; width: 100%; padding: 12px; margin: 8px 0; background: #f8f9fa; border: 1px solid #ddd; cursor: pointer; border-radius: 6px; font-weight: 500; transition: 0.2s; }
-    .btn-option:hover { background: #d32f2f; color: white; border-color: #d32f2f; }
-    .btn-attack-target { display: flex; align-items: center; width: 100%; padding: 10px; margin: 5px 0; background: #ffcdd2; border: 1px solid #e57373; cursor: pointer; border-radius: 6px; text-align: left; font-weight: bold; color: #c62828; }
-    .btn-attack-target:hover { background: #e57373; color: white; }
-    .quiz-content { font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; color: #2c3e50; }
+    /* Disable button cho người xem */
+    .btn-option:disabled {
+        background: #e0e0e0;
+        color: #999;
+        cursor: not-allowed;
+        border-color: #ccc;
+    }
 
-    .guide-card { max-width: 500px; text-align: left; max-height: 80vh; overflow-y: auto; }
-    .guide-card h3 { text-align: center; color: #d32f2f; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-    .guide-section { margin-bottom: 15px; }
-    .guide-section h5 { font-weight: bold; color: #2980b9; margin-bottom: 5px; }
-    .guide-section ul { padding-left: 20px; margin: 5px 0; }
-    .dot-guide { width: 12px; height: 12px; display: inline-block; border-radius: 50%; border: 1px solid #999; margin-right: 5px; }
-    .char-guide-row { display: flex; align-items: center; margin-bottom: 5px; font-size: 0.9rem; }
-    .char-guide-row img { margin-right: 8px; border-radius: 3px; }
+        .btn-option:disabled:hover {
+            background: #e0e0e0;
+            color: #999;
+            border-color: #ccc;
+            transform: none;
+        }
 
-    .timer-bar { height: 5px; background: red; margin-bottom: 10px; transition: width 1s linear; border-radius: 5px; }
-    .winner-card { border: 5px solid gold; background: #fffbea; }
-    .winner-avatar { width: 100px; height: 100px; object-fit: contain; margin: 10px; animation: bounce 1s infinite; }
-    .winner-name { font-size: 2rem; margin: 5px 0; font-weight: bold; }
-    .winner-score { font-size: 2.5rem; color: #d32f2f; margin: 10px 0; font-weight: bold; }
-    .winner-role { color: #666; font-style: italic; }
-    @@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    /* Các CSS cũ giữ nguyên */
+    .room-info-badge {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: white;
+        padding: 5px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .cell-start {
+        background: white;
+    }
+
+    .cell-easy {
+        background: #a5d6a7;
+    }
+
+    .cell-normal {
+        background: #ce93d8;
+    }
+
+    .cell-hard {
+        background: #fff59d;
+    }
+
+    .cell-attack {
+        background: #ef9a9a;
+    }
+
+    .cell-forward {
+        background: #90caf9;
+    }
+
+    .cell-backward {
+        background: #b0bec5;
+    }
+
+    .character-tokens {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-end;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        bottom: 2px;
+        pointer-events: none;
+    }
+
+    .char-token {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        margin: -3px;
+        filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.3));
+        transition: all 0.3s ease;
+        z-index: 1;
+    }
+
+    .cell:hover .char-token {
+        margin: 1px;
+        z-index: 10;
+        transform: scale(1.1);
+    }
+
+    .mini-char {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+        margin-right: 8px;
+        vertical-align: middle;
+        border-radius: 4px;
+        background: #f0f0f0;
+        border: 1px solid #ccc;
+    }
+
+    .mini-char-leaderboard {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    .center-content {
+        grid-column: 2/5;
+        grid-row: 2/5;
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .player-list-visual {
+        list-style: none;
+        padding: 0;
+        text-align: left;
+        width: 100%;
+        max-width: 250px;
+        margin-bottom: 15px;
+    }
+
+        .player-list-visual li {
+            display: flex;
+            align-items: center;
+            padding: 6px;
+            border-bottom: 1px solid #eee;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+    .player-name {
+        flex-grow: 1;
+    }
+
+    .observer-icon {
+        margin-right: 8px;
+        font-size: 1.2rem;
+    }
+
+    .observer-item {
+        font-style: italic;
+        color: #666;
+    }
+
+    .mini-leaderboard {
+        margin-top: 10px;
+        width: 100%;
+        font-size: 0.9rem;
+        border-top: 1px solid #eee;
+        padding-top: 5px;
+    }
+
+    .game-leaderboard-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 3px 0;
+    }
+
+    .lobby-box {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        width: 400px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .title {
+        color: #c0392b;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .input-name {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .input-code {
+        width: 100px;
+        padding: 10px;
+        text-transform: uppercase;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .btn-create, .btn-join, .btn-start, .btn-roll, .btn-ok, .btn-guide {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        color: white;
+        margin-top: 5px;
+        transition: 0.2s;
+    }
+
+    .btn-create {
+        background: #d32f2f;
+        width: 100%;
+    }
+
+    .btn-join {
+        background: #2980b9;
+    }
+
+    .btn-start {
+        background: #27ae60;
+    }
+
+    .btn-roll {
+        background: #c0392b;
+    }
+
+    .btn-ok {
+        background: #2980b9;
+    }
+
+    .btn-guide {
+        background: #f39c12;
+        width: 100%;
+        margin-top: 15px;
+        color: white;
+    }
+
+        .btn-guide:hover {
+            background: #e67e22;
+        }
+
+    .btn-guide-small {
+        background: #f39c12;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        color: white;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 0.8rem;
+    }
+
+    .dice-img {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
+
+    .error-text {
+        color: red;
+        margin-top: 10px;
+        font-size: 0.9rem;
+    }
+
+    .blink {
+        animation: blinker 1.5s linear infinite;
+        color: #7f8c8d;
+        font-style: italic;
+    }
+
+    @@keyframes blinker {
+        50% {
+            opacity: 0;
+        }
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+    }
+
+    .popup-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        text-align: center;
+        min-width: 320px;
+        max-width: 400px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        animation: zoomIn 0.3s;
+    }
+
+    @@keyframes zoomIn {
+        from {
+            transform: scale(0.8);
+            opacity: 0;
+        }
+
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .btn-option {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: 0.2s;
+    }
+
+        .btn-option:hover {
+            background: #d32f2f;
+            color: white;
+            border-color: #d32f2f;
+        }
+
+    .btn-attack-target {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        background: #ffcdd2;
+        border: 1px solid #e57373;
+        cursor: pointer;
+        border-radius: 6px;
+        text-align: left;
+        font-weight: bold;
+        color: #c62828;
+    }
+
+        .btn-attack-target:hover {
+            background: #e57373;
+            color: white;
+        }
+
+    .quiz-content {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .guide-card {
+        max-width: 500px;
+        text-align: left;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+        .guide-card h3 {
+            text-align: center;
+            color: #d32f2f;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+    .guide-section {
+        margin-bottom: 15px;
+    }
+
+        .guide-section h5 {
+            font-weight: bold;
+            color: #2980b9;
+            margin-bottom: 5px;
+        }
+
+        .guide-section ul {
+            padding-left: 20px;
+            margin: 5px 0;
+        }
+
+    .dot-guide {
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        border-radius: 50%;
+        border: 1px solid #999;
+        margin-right: 5px;
+    }
+
+    .char-guide-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+
+        .char-guide-row img {
+            margin-right: 8px;
+            border-radius: 3px;
+        }
+
+    .timer-bar {
+        height: 5px;
+        background: red;
+        margin-bottom: 10px;
+        transition: width 1s linear;
+        border-radius: 5px;
+    }
+
+    .winner-card {
+        border: 5px solid gold;
+        background: #fffbea;
+    }
+
+    .winner-avatar {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        margin: 10px;
+        animation: bounce 1s infinite;
+    }
+
+    .winner-name {
+        font-size: 2rem;
+        margin: 5px 0;
+        font-weight: bold;
+    }
+
+    .winner-score {
+        font-size: 2.5rem;
+        color: #d32f2f;
+        margin: 10px 0;
+        font-weight: bold;
+    }
+
+    .winner-role {
+        color: #666;
+        font-style: italic;
+    }
+
+    @@keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+    }
 </style>
 
 @code {
@@ -313,9 +751,10 @@
     private int currentPlayerIndex = 0, lastDiceValue = 1, currentRound = 1;
     private bool isRolling = false, isPopupActive = false, isQuizActive = false, isAttackMode = false, isGuideActive = false, isGameOver = false;
     private string popupMessage = "";
+    private string currentActivePlayerName = ""; // Tên người đang chơi lượt này
     private QuizQuestion? currentQuiz;
     private HubConnection? hubConnection;
-    
+
     private int quizTimeLeft = 10;
     private CancellationTokenSource? timerCts;
 
@@ -326,114 +765,195 @@
         hubConnection.On<string, List<Player>>("RoomCreated", (code, list) => { currentRoomCode = code; Players = list; isJoined = true; isHost = true; amIObserver = true; InvokeAsync(StateHasChanged); });
         hubConnection.On<List<Player>, bool>("UpdatePlayers", (list, started) => { Players = list; gameStarted = started; if (!isHost) isJoined = true; InvokeAsync(StateHasChanged); });
         hubConnection.On<string>("JoinError", (msg) => { errorMessage = msg; InvokeAsync(StateHasChanged); });
-        
-        hubConnection.On<string, int>("GameStarted", (turnId, round) => { gameStarted = true; currentRound = round; UpdateTurn(turnId); });
-        hubConnection.On<string, List<Player>, int>("NextTurn", (nextId, list, round) => { Players = list; currentRound = round; UpdateTurn(nextId); });
-        
-        hubConnection.On<List<Player>>("GameOver", (finalList) => { 
-            Players = finalList; 
-            isGameOver = true; 
-            isQuizActive = false; isPopupActive = false;
-            InvokeAsync(StateHasChanged); 
-        });
 
-        hubConnection.On<int>("DiceRolled", async (val) => {
+        hubConnection.On<string, int>("GameStarted", (turnId, round) => { gameStarted = true; currentRound = round; UpdateTurn(turnId); });
+        hubConnection.On<List<Player>>("GameOver", (finalList) => { Players = finalList; isGameOver = true; isQuizActive = false; isPopupActive = false; InvokeAsync(StateHasChanged); });
+
+        hubConnection.On<int>("DiceRolled", async (val) =>
+        {
             isRolling = true; InvokeAsync(StateHasChanged);
             await Task.Delay(2000);
             lastDiceValue = val; isRolling = false;
-            if (isMyTurn) {
+            if (isMyTurn)
+            {
                 var p = Players[currentPlayerIndex];
                 p.Position = (p.Position + lastDiceValue) % 16;
-                HandleCellLogic(p);
+                HandleCellLogic(p); // Chỉ người chơi hiện tại mới chạy Logic này
             }
             InvokeAsync(StateHasChanged);
+        });
+
+        // MỚI: Xử lý sự kiện hiển thị Câu hỏi cho tất cả mọi người
+        hubConnection.On<QuizQuestion, string>("ShowQuiz", (q, activeId) =>
+        {
+            currentQuiz = q;
+            currentActivePlayerName = Players.FirstOrDefault(p => p.ConnectionId == activeId)?.Name ?? "Người chơi";
+            isQuizActive = true;
+            InvokeAsync(StateHasChanged);
+        });
+
+        // MỚI: Xử lý sự kiện hiển thị Tấn công cho tất cả
+        hubConnection.On<string>("ShowAttack", (activeId) =>
+        {
+            currentActivePlayerName = Players.FirstOrDefault(p => p.ConnectionId == activeId)?.Name ?? "Người chơi";
+            isAttackMode = true;
+            InvokeAsync(StateHasChanged);
+        });
+
+        // MỚI: Nhận kết quả từ Server và Chuyển lượt
+        hubConnection.On<string, string, List<Player>, int>("TurnResultAndNext", (msg, nextId, list, round) =>
+        {
+            // Tắt hết popup cũ
+            isQuizActive = false;
+            isAttackMode = false;
+
+            // Cập nhật dữ liệu mới
+            Players = list;
+            currentRound = round;
+
+            // Hiện thông báo kết quả
+            if (!string.IsNullOrEmpty(msg))
+            {
+                popupMessage = msg;
+                isPopupActive = true;
+            }
+
+            UpdateTurn(nextId);
         });
 
         await hubConnection.StartAsync();
     }
 
-    private void UpdateTurn(string turnId) {
+    private void UpdateTurn(string turnId)
+    {
         isMyTurn = (hubConnection?.ConnectionId == turnId);
         currentPlayerIndex = Players.FindIndex(p => p.ConnectionId == turnId);
         InvokeAsync(StateHasChanged);
     }
 
-    private async Task CreateRoom() { if(!string.IsNullOrWhiteSpace(inputName)) await hubConnection!.SendAsync("CreateRoom", inputName); }
-    private async Task JoinRoom() { if(!string.IsNullOrWhiteSpace(inputName) && !string.IsNullOrWhiteSpace(inputRoomCode)) await hubConnection!.SendAsync("JoinRoom", inputName, inputRoomCode); }
-    private async Task StartGame() { if(isHost) await hubConnection!.SendAsync("StartGame"); }
-    private async Task RequestRoll() { if(isMyTurn) await hubConnection!.SendAsync("RequestRoll"); }
+    private async Task CreateRoom() { if (!string.IsNullOrWhiteSpace(inputName)) await hubConnection!.SendAsync("CreateRoom", inputName); }
+    private async Task JoinRoom() { if (!string.IsNullOrWhiteSpace(inputName) && !string.IsNullOrWhiteSpace(inputRoomCode)) await hubConnection!.SendAsync("JoinRoom", inputName, inputRoomCode); }
+    private async Task StartGame() { if (isHost) await hubConnection!.SendAsync("StartGame"); }
+    private async Task RequestRoll() { if (isMyTurn) await hubConnection!.SendAsync("RequestRoll"); }
 
-    private void HandleCellLogic(Player p) {
+    private void HandleCellLogic(Player p)
+    {
         string color = GetCellColorClass(p.Position);
-        if (p.Position == 0) {
-            popupMessage = "🎉 HOÀN THÀNH! +5 điểm."; p.Score += 5; isPopupActive = true; return;
+        if (p.Position == 0)
+        {
+            // Về đích thì tự xử lý luôn không cần popup Quiz
+            p.Score += 5;
+            hubConnection!.SendAsync("SyncResult", "🎉 HOÀN THÀNH! +5 điểm.", Players);
+            return;
         }
-        switch (color) {
-            case "cell-easy": _ = StartQuiz(1); break;
-            case "cell-normal": _ = StartQuiz(2); break;
-            case "cell-hard": _ = StartQuiz(3); break;
-            case "cell-attack": isAttackMode = true; break;
-            case "cell-forward": p.Position = (p.Position + 2) % 16; popupMessage = "🚀 TIẾN BƯỚC! +2 bước."; isPopupActive = true; break;
-            case "cell-backward": p.Position = (p.Position - 2 + 16) % 16; popupMessage = "⚠️ RỦI RO! Lùi 2 bước."; isPopupActive = true; break;
-            default: popupMessage = $"Đến ô số {p.Position}"; isPopupActive = true; break;
+
+        switch (color)
+        {
+            case "cell-easy": InitiateQuiz(1); break;
+            case "cell-normal": InitiateQuiz(2); break;
+            case "cell-hard": InitiateQuiz(3); break;
+            case "cell-attack":
+                // Gửi tín hiệu để mở Popup Attack cho mọi người
+                hubConnection!.SendAsync("SyncAttackStart");
+                break;
+            case "cell-forward":
+                p.Position = (p.Position + 2) % 16;
+                hubConnection!.SendAsync("SyncResult", "🚀 TIẾN BƯỚC! +2 bước.", Players);
+                break;
+            case "cell-backward":
+                p.Position = (p.Position - 2 + 16) % 16;
+                hubConnection!.SendAsync("SyncResult", "⚠️ RỦI RO! Lùi 2 bước.", Players);
+                break;
+            default:
+                hubConnection!.SendAsync("SyncResult", $"Đến ô số {p.Position}", Players);
+                break;
         }
     }
 
-    private async Task StartQuiz(int difficulty)
+    // MỚI: Hàm khởi tạo Quiz và gửi lên Server để đồng bộ
+    private void InitiateQuiz(int difficulty)
     {
-        currentQuiz = QuestionBank.GetRandomQuestion(difficulty);
-        isQuizActive = true;
-        quizTimeLeft = 10;
-        
-        timerCts?.Cancel();
-        timerCts?.Dispose();
-        timerCts = new CancellationTokenSource();
+        var q = QuestionBank.GetRandomQuestion(difficulty);
+        // Gửi câu hỏi lên Server để Server báo cho mọi người cùng hiện
+        hubConnection!.SendAsync("SyncQuizStart", q);
 
-        try {
-            while (quizTimeLeft > 0 && isQuizActive) {
+        // Bắt đầu đếm giờ (chỉ chạy ở máy người đang chơi)
+        _ = StartQuizTimer();
+    }
+
+    private async Task StartQuizTimer()
+    {
+        quizTimeLeft = 10;
+        timerCts?.Cancel(); timerCts?.Dispose(); timerCts = new CancellationTokenSource();
+
+        try
+        {
+            while (quizTimeLeft > 0)
+            {
                 await Task.Delay(1000, timerCts.Token);
                 quizTimeLeft--;
                 await InvokeAsync(StateHasChanged);
             }
-            if (isQuizActive && quizTimeLeft <= 0) {
-                 await InvokeAsync(() => AnswerQuiz(-1));
-            }
-        } catch (TaskCanceledException) { 
-        } catch (Exception) {
+            // Hết giờ -> Tự động trả lời sai (-1)
+            await InvokeAsync(() => AnswerQuiz(-1));
         }
+        catch (TaskCanceledException) { }
+        catch (Exception) { }
     }
 
-    private void AnswerQuiz(int index) {
-        timerCts?.Cancel();
-        
-        if (index == -1) {
-            Players[currentPlayerIndex].Score -= 1;
-            popupMessage = "⏰ HẾT GIỜ! Bạn bị trừ 1 điểm.";
-        }
-        else if (currentQuiz != null && index == currentQuiz.CorrectIndex) {
-            Players[currentPlayerIndex].Score += currentQuiz.Difficulty;
-            popupMessage = "✅ CHÍNH XÁC! Cộng điểm.";
-        } else {
-            Players[currentPlayerIndex].Score -= 1;
-            popupMessage = "❌ SAI RỒI! Bạn bị trừ 1 điểm.";
-        }
-        isQuizActive = false;
-        isPopupActive = true;
-        StateHasChanged(); 
-    }
-
-    private void AttackPlayer(Player target) { target.Score -= 2; popupMessage = $"⚔️ TẤN CÔNG! {target.Name} -2 điểm."; isAttackMode = false; isPopupActive = true; }
-    private async Task ClosePopup() { isPopupActive = false; if (isMyTurn) await hubConnection!.SendAsync("EndTurn", Players); }
-    private void ReloadGame() { Navigation.Refresh(true); }
-
-    public void Dispose()
+    private void AnswerQuiz(int index)
     {
-        timerCts?.Cancel();
-        timerCts?.Dispose();
+        timerCts?.Cancel(); // Dừng đồng hồ
+        string msg = "";
+
+        if (index == -1)
+        {
+            Players[currentPlayerIndex].Score -= 1;
+            msg = "⏰ HẾT GIỜ! Bị trừ 1 điểm.";
+        }
+        else if (currentQuiz != null && index == currentQuiz.CorrectIndex)
+        {
+            Players[currentPlayerIndex].Score += currentQuiz.Difficulty;
+            msg = "✅ CHÍNH XÁC! Cộng điểm.";
+        }
+        else
+        {
+            Players[currentPlayerIndex].Score -= 1;
+            msg = "❌ SAI RỒI! Bị trừ 1 điểm.";
+        }
+
+        // Gửi kết quả lên Server để đồng bộ cho mọi người và đóng Popup
+        hubConnection!.SendAsync("SyncResult", msg, Players);
     }
+
+    private void AttackPlayer(Player target)
+    {
+        target.Score -= 2;
+        string msg = $"⚔️ {Players[currentPlayerIndex].Name} ĐÃ TẤN CÔNG {target.Name} (-2 điểm)!";
+        hubConnection!.SendAsync("SyncResult", msg, Players);
+    }
+
+    // Nút đóng popup kết quả (chỉ đóng ở máy local)
+    private void ClosePopup() { isPopupActive = false; }
+    private void ReloadGame() { Navigation.Refresh(true); }
+    public void Dispose() { timerCts?.Cancel(); timerCts?.Dispose(); }
 
     private int GetMonopolyIndex(int r, int c) { if (r == 0) return c; if (c == 4 && r > 0) return 4 + r; if (r == 4 && c < 4) return 8 + (4 - c); if (c == 0 && r > 0 && r < 4) return 12 + (4 - r); return -1; }
     private string GetCellColorClass(int i) => i switch { 1 or 7 or 14 => "cell-easy", 2 or 9 or 15 => "cell-normal", 3 or 10 => "cell-hard", 4 or 8 or 12 => "cell-attack", 5 or 11 => "cell-forward", 6 or 13 => "cell-backward", _ => "cell-start" };
-    private string GetCellName(int i) => i switch { 0 => "BẮT ĐẦU", 4 => "PÁC BÓ", 8 => "VIỆT BẮC", 12 => "BA ĐÌNH", _ => "" };
+
+    // MỚI: HÀM LẤY TÊN LABEL CHO Ô
+    private string GetCellLabel(int i) => i switch
+    {
+        1 or 7 or 14 => "CÂU HỎI (DỄ)",
+        2 or 9 or 15 => "CÂU HỎI (VỪA)",
+        3 or 10 => "CÂU HỎI (KHÓ)",
+        4 or 8 or 12 => "TẤN CÔNG",
+        5 or 11 => "TIẾN BƯỚC",
+        6 or 13 => "LÙI BƯỚC",
+        0 => "BẮT ĐẦU",
+        _ => ""
+    };
+
+    private string GetCellName(int i) => i switch { 0 => "", 4 => "PÁC BÓ", 8 => "VIỆT BẮC", 12 => "BA ĐÌNH", _ => "" };
     private string GetCharacterName(string color) => color.ToLower() switch { "blue" => "Nông dân", "green" => "Bộ đội", "orange" => "Công nhân", _ => "Trí thức" };
 }
