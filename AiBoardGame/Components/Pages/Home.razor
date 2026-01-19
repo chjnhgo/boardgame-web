@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager Navigation
 @rendermode InteractiveServer
+@implements IDisposable
 
 <div class="monopoly-container">
     @if (!isJoined)
@@ -21,14 +22,13 @@
             </div>
 
             <button class="btn-guide" @onclick="() => isGuideActive = true">📖 HƯỚNG DẪN & QUY TẮC</button>
-            
             <p class="error-text">@errorMessage</p>
         </div>
     }
     else
     {
         <div class="monopoly-board">
-             <div class="room-info-badge">PHÒNG: <b>@currentRoomCode</b> | VÒNG: <b style="color:red">@currentRound/10</b></div>
+             <div class="room-info-badge">PHÒNG: <b>@currentRoomCode</b> | VÒNG: <b style="color:yellow">@currentRound/10</b></div>
 
             @for (int i = 0; i < 25; i++)
             {
@@ -216,14 +216,38 @@
 }
 
 <style>
-    .monopoly-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #2c3e50; font-family: 'Segoe UI', sans-serif; }
-    .monopoly-board { display: grid; grid-template-columns: repeat(5, 120px); grid-template-rows: repeat(5, 120px); gap: 5px; background: #34495e; padding: 10px; border: 8px solid #c0392b; border-radius: 15px; position: relative; }
+    /* CSS Cập nhật Background */
+    .monopoly-container { 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        min-height: 100vh; 
+        font-family: 'Segoe UI', sans-serif;
+        
+        /* CẤU HÌNH BACKGROUND IMAGE MỚI */
+        background: url('/images/Background.png') no-repeat center center fixed;
+        background-size: cover; /* Ảnh phủ kín màn hình */
+    }
+
+    /* Thêm độ mờ cho bảng game để nổi bật trên nền */
+    .monopoly-board { 
+        display: grid; 
+        grid-template-columns: repeat(5, 120px); 
+        grid-template-rows: repeat(5, 120px); 
+        gap: 5px; 
+        background: rgba(52, 73, 94, 0.95); /* Màu nền bán trong suốt */
+        padding: 10px; 
+        border: 8px solid #c0392b; 
+        border-radius: 15px; 
+        position: relative; 
+        box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Đổ bóng cho bảng nổi lên */
+    }
+
+    /* Các CSS khác giữ nguyên */
     .room-info-badge { position: absolute; top: -40px; left: 0; background: white; padding: 5px 15px; border-radius: 5px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-    
     .cell { background: #ecf0f1; border: 1px solid #bdc3c7; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 5px; text-align: center; position: relative; font-size: 0.8rem; font-weight: bold; overflow: visible; }
     .cell-name { margin-bottom: 2px; font-size: 0.75rem; }
     .cell-id { position: absolute; top: 2px; left: 4px; font-size: 0.6rem; color: rgba(0,0,0,0.4); }
-
     .cell-start { background: white; } .cell-easy { background: #a5d6a7; } .cell-normal { background: #ce93d8; } .cell-hard { background: #fff59d; } .cell-attack { background: #ef9a9a; } .cell-forward { background: #90caf9; } .cell-backward { background: #b0bec5; }
 
     .character-tokens { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; width: 100%; height: 100%; position: absolute; bottom: 2px; pointer-events: none; }
@@ -232,9 +256,7 @@
 
     .mini-char { width: 24px; height: 24px; object-fit: contain; margin-right: 8px; vertical-align: middle; border-radius: 4px; background: #f0f0f0; border: 1px solid #ccc; }
     .mini-char-leaderboard { width: 20px; height: 20px; object-fit: contain; margin-right: 5px; vertical-align: middle; }
-
     .center-content { grid-column: 2/5; grid-row: 2/5; background: white; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    
     .player-list-visual { list-style: none; padding: 0; text-align: left; width: 100%; max-width: 250px; margin-bottom: 15px; }
     .player-list-visual li { display: flex; align-items: center; padding: 6px; border-bottom: 1px solid #eee; font-weight: bold; font-size: 0.9rem; }
     .player-name { flex-grow: 1; }
@@ -243,7 +265,6 @@
 
     .mini-leaderboard { margin-top: 10px; width: 100%; font-size: 0.9rem; border-top: 1px solid #eee; padding-top: 5px; }
     .game-leaderboard-row { display: flex; align-items: center; justify-content: space-between; padding: 3px 0; }
-
     .lobby-box { background: white; padding: 30px; border-radius: 15px; text-align: center; width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
     .title { color: #c0392b; font-weight: bold; margin-bottom: 20px; }
     .input-name { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px; }
@@ -251,7 +272,6 @@
     .btn-create, .btn-join, .btn-start, .btn-roll, .btn-ok, .btn-guide { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; color: white; margin-top: 5px; transition: 0.2s; }
     .btn-create { background: #d32f2f; width: 100%; } .btn-join { background: #2980b9; } .btn-start { background: #27ae60; } .btn-roll { background: #c0392b; } .btn-ok { background: #2980b9; }
     
-    /* CSS NÚT GUIDE MỚI */
     .btn-guide { background: #f39c12; width: 100%; margin-top: 15px; color: white; }
     .btn-guide:hover { background: #e67e22; }
     .btn-guide-small { background: #f39c12; border: none; padding: 5px 10px; border-radius: 4px; color: white; cursor: pointer; margin-top: 10px; font-size: 0.8rem; }
@@ -269,7 +289,6 @@
     .btn-attack-target:hover { background: #e57373; color: white; }
     .quiz-content { font-size: 1.1rem; font-weight: bold; margin-bottom: 15px; color: #2c3e50; }
 
-    /* CSS CHO MODAL HƯỚNG DẪN */
     .guide-card { max-width: 500px; text-align: left; max-height: 80vh; overflow-y: auto; }
     .guide-card h3 { text-align: center; color: #d32f2f; margin-bottom: 15px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
     .guide-section { margin-bottom: 15px; }
@@ -279,7 +298,6 @@
     .char-guide-row { display: flex; align-items: center; margin-bottom: 5px; font-size: 0.9rem; }
     .char-guide-row img { margin-right: 8px; border-radius: 3px; }
 
-    /* Thanh thời gian & Winner */
     .timer-bar { height: 5px; background: red; margin-bottom: 10px; transition: width 1s linear; border-radius: 5px; }
     .winner-card { border: 5px solid gold; background: #fffbea; }
     .winner-avatar { width: 100px; height: 100px; object-fit: contain; margin: 10px; animation: bounce 1s infinite; }
@@ -352,9 +370,9 @@
             popupMessage = "🎉 HOÀN THÀNH! +5 điểm."; p.Score += 5; isPopupActive = true; return;
         }
         switch (color) {
-            case "cell-easy": StartQuiz(1); break;
-            case "cell-normal": StartQuiz(2); break;
-            case "cell-hard": StartQuiz(3); break;
+            case "cell-easy": _ = StartQuiz(1); break;
+            case "cell-normal": _ = StartQuiz(2); break;
+            case "cell-hard": _ = StartQuiz(3); break;
             case "cell-attack": isAttackMode = true; break;
             case "cell-forward": p.Position = (p.Position + 2) % 16; popupMessage = "🚀 TIẾN BƯỚC! +2 bước."; isPopupActive = true; break;
             case "cell-backward": p.Position = (p.Position - 2 + 16) % 16; popupMessage = "⚠️ RỦI RO! Lùi 2 bước."; isPopupActive = true; break;
@@ -362,25 +380,28 @@
         }
     }
 
-    private async void StartQuiz(int difficulty)
+    private async Task StartQuiz(int difficulty)
     {
         currentQuiz = QuestionBank.GetRandomQuestion(difficulty);
         isQuizActive = true;
         quizTimeLeft = 10;
         
         timerCts?.Cancel();
+        timerCts?.Dispose();
         timerCts = new CancellationTokenSource();
 
         try {
             while (quizTimeLeft > 0 && isQuizActive) {
                 await Task.Delay(1000, timerCts.Token);
                 quizTimeLeft--;
-                StateHasChanged();
+                await InvokeAsync(StateHasChanged);
             }
-            if (isQuizActive && quizTimeLeft == 0) {
-                AnswerQuiz(-1);
+            if (isQuizActive && quizTimeLeft <= 0) {
+                 await InvokeAsync(() => AnswerQuiz(-1));
             }
-        } catch (TaskCanceledException) { }
+        } catch (TaskCanceledException) { 
+        } catch (Exception) {
+        }
     }
 
     private void AnswerQuiz(int index) {
@@ -399,11 +420,18 @@
         }
         isQuizActive = false;
         isPopupActive = true;
+        StateHasChanged(); 
     }
 
     private void AttackPlayer(Player target) { target.Score -= 2; popupMessage = $"⚔️ TẤN CÔNG! {target.Name} -2 điểm."; isAttackMode = false; isPopupActive = true; }
     private async Task ClosePopup() { isPopupActive = false; if (isMyTurn) await hubConnection!.SendAsync("EndTurn", Players); }
     private void ReloadGame() { Navigation.Refresh(true); }
+
+    public void Dispose()
+    {
+        timerCts?.Cancel();
+        timerCts?.Dispose();
+    }
 
     private int GetMonopolyIndex(int r, int c) { if (r == 0) return c; if (c == 4 && r > 0) return 4 + r; if (r == 4 && c < 4) return 8 + (4 - c); if (c == 0 && r > 0 && r < 4) return 12 + (4 - r); return -1; }
     private string GetCellColorClass(int i) => i switch { 1 or 7 or 14 => "cell-easy", 2 or 9 or 15 => "cell-normal", 3 or 10 => "cell-hard", 4 or 8 or 12 => "cell-attack", 5 or 11 => "cell-forward", 6 or 13 => "cell-backward", _ => "cell-start" };
