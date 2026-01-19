@@ -3,6 +3,30 @@
   "WorkspaceRootPath": "D:\\PE_PRN\\AiBoardGame\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\wwwroot\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\wwwroot\\app.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\components\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\data\\questionbank.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\data\\questionbank.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
     },
@@ -13,14 +37,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\aiboardgame.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\aiboardgame.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\components\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\hubs\\gamehub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\model\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,10 +55,6 @@
       "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\model\\quizquestion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|d:\\pe_prn\\aiboardgame\\aiboardgame\\data\\questionbank.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{06793D61-6F22-4156-94D9-25D01C770CBC}|AiBoardGame\\AiBoardGame.csproj|solutionrelative:aiboardgame\\data\\questionbank.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:AiBoardGame\\Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
@@ -59,6 +71,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "app.css",
+              "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\wwwroot\\app.css",
+              "RelativeDocumentMoniker": "AiBoardGame\\wwwroot\\app.css",
+              "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\wwwroot\\app.css*",
+              "RelativeToolTip": "AiBoardGame\\wwwroot\\app.css*",
+              "ViewState": "AgIAAIUAAAAAAAAAAAAAAI8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2026-01-19T06:17:20.753Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "App.razor",
+              "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Components\\App.razor",
+              "RelativeDocumentMoniker": "AiBoardGame\\Components\\App.razor",
+              "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Components\\App.razor",
+              "RelativeToolTip": "AiBoardGame\\Components\\App.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-19T06:17:14.262Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "AiBoardGame\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "AiBoardGame\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-01-19T06:16:44.905Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": ".gitignore",
               "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\.gitignore",
               "RelativeDocumentMoniker": "AiBoardGame\\.gitignore",
@@ -71,55 +122,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Dockerfile",
-              "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Dockerfile",
-              "RelativeDocumentMoniker": "AiBoardGame\\Dockerfile",
-              "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Dockerfile",
-              "RelativeToolTip": "AiBoardGame\\Dockerfile",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAwBkAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-01-19T03:58:48.563Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "GameHub.cs",
-              "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Hubs\\GameHub.cs",
-              "RelativeDocumentMoniker": "AiBoardGame\\Hubs\\GameHub.cs",
-              "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Hubs\\GameHub.cs",
-              "RelativeToolTip": "AiBoardGame\\Hubs\\GameHub.cs",
-              "ViewState": "AgIAAIYAAAAAAAAAAAAowJsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-19T03:11:48.997Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Player.cs",
-              "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Model\\Player.cs",
-              "RelativeDocumentMoniker": "AiBoardGame\\Model\\Player.cs",
-              "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Model\\Player.cs",
-              "RelativeToolTip": "AiBoardGame\\Model\\Player.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-19T03:11:12.011Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
               "Title": "Home.razor",
               "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Components\\Pages\\Home.razor",
               "RelativeDocumentMoniker": "AiBoardGame\\Components\\Pages\\Home.razor",
               "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Components\\Pages\\Home.razor",
               "RelativeToolTip": "AiBoardGame\\Components\\Pages\\Home.razor",
-              "ViewState": "AgIAAI8AAAAAAAAAAAAowJgAAAApAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-18T05:31:41.295Z"
+              "WhenOpened": "2026-01-18T05:31:41.295Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 11,
               "Title": "_Imports.razor",
               "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Components\\_Imports.razor",
               "RelativeDocumentMoniker": "AiBoardGame\\Components\\_Imports.razor",
@@ -131,7 +147,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "QuizQuestion.cs",
               "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Model\\QuizQuestion.cs",
               "RelativeDocumentMoniker": "AiBoardGame\\Model\\QuizQuestion.cs",
@@ -143,7 +159,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Program.cs",
               "RelativeDocumentMoniker": "AiBoardGame\\Program.cs",
@@ -155,7 +171,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 10,
               "Title": "favicon.png",
               "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\wwwroot\\favicon.png",
               "RelativeDocumentMoniker": "AiBoardGame\\wwwroot\\favicon.png",
@@ -166,7 +182,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 8,
               "Title": "AiBoardGame.csproj",
               "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\AiBoardGame.csproj",
               "RelativeDocumentMoniker": "AiBoardGame\\AiBoardGame.csproj",
@@ -178,15 +194,53 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 5,
               "Title": "QuestionBank.cs",
               "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Data\\QuestionBank.cs",
               "RelativeDocumentMoniker": "AiBoardGame\\Data\\QuestionBank.cs",
               "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Data\\QuestionBank.cs",
               "RelativeToolTip": "AiBoardGame\\Data\\QuestionBank.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAQwEkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-18T05:36:28.863Z"
+              "WhenOpened": "2026-01-18T05:36:28.863Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "GameHub.cs",
+              "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Hubs\\GameHub.cs",
+              "RelativeDocumentMoniker": "AiBoardGame\\Hubs\\GameHub.cs",
+              "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Hubs\\GameHub.cs*",
+              "RelativeToolTip": "AiBoardGame\\Hubs\\GameHub.cs*",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAQwIYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-19T03:11:48.997Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Player.cs",
+              "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Model\\Player.cs",
+              "RelativeDocumentMoniker": "AiBoardGame\\Model\\Player.cs",
+              "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Model\\Player.cs",
+              "RelativeToolTip": "AiBoardGame\\Model\\Player.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-19T03:11:12.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Dockerfile",
+              "DocumentMoniker": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Dockerfile",
+              "RelativeDocumentMoniker": "AiBoardGame\\Dockerfile",
+              "ToolTip": "D:\\PE_PRN\\AiBoardGame\\AiBoardGame\\Dockerfile",
+              "RelativeToolTip": "AiBoardGame\\Dockerfile",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAwBkAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-01-19T03:58:48.563Z"
             }
           ]
         }
