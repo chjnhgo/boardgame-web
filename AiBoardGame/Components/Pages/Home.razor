@@ -748,6 +748,7 @@
         {
             currentQuiz = q;
             currentActivePlayerName = Players.FirstOrDefault(p => p.ConnectionId == activeId)?.Name ?? "Người chơi";
+            isProcessing = false;
             isQuizActive = true;
             // Nếu là lượt mình thì đếm giờ
             if (activeId == hubConnection.ConnectionId) _ = StartQuizTimer();
@@ -758,6 +759,7 @@
         hubConnection.On<string>("ShowAttack", (activeId) =>
         {
             currentActivePlayerName = Players.FirstOrDefault(p => p.ConnectionId == activeId)?.Name ?? "Người chơi";
+            isProcessing = false;
             isAttackMode = true;
             InvokeAsync(StateHasChanged);
         });
